@@ -1,10 +1,13 @@
 import streamlit as st
+import os
 
 st.title("💻 Бот для разработчиков")
 st.write("Задайте технический вопрос (Python, Streamlit, API и др.):")
-
+col1, col2 = st.columns(2)
 # Имитация бота
-user_input = st.chat_input("Например: 'Как создать кнопку в Streamlit?'")
+with col1:
+    st.write('')
+    user_input = st.chat_input("Например: 'Как создать кнопку в Streamlit?'")
 
 if user_input:
     with st.chat_message("user"):
@@ -21,3 +24,17 @@ if user_input:
 
     with st.chat_message("assistant"):
         st.write(answer)
+with col2:
+    uploaded_file = st.file_uploader('')
+
+if uploaded_file is not None:
+    # Создаем папку uploads, если ее нет
+    if not os.path.exists("uploads"):
+        os.makedirs("uploads")
+    
+    # Сохраняем файл
+    file_path = os.path.join("uploads", uploaded_file.name)
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    
+    st.success(f"Файл сохранен: {file_path}")
